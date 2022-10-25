@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+{% block stylecontent %}
+
+  
+<style>
+    .button{
+        background-color: blue;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        margin-left: -16px;
+        cursor: pointer;
+    }
+    .button a{
+      color: white;
+      text-decoration: none;
+    }
+    .button:hover{
+        background-color: rgb(235, 94, 94);
+    }
+  
+    .button2{
+        margin-left: 37px;
+        background-color: blue;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        cursor: pointer;
+    }
+    .button2:hover{
+        background-color: rgb(235, 94, 94);
+    }
+    .copyright{
+        background-color: rgb(32, 31, 31);
+        margin-top: 306px;
+        padding: 59px;
+        margin-left: 0px;
+    }
+    .text{
+        color: white;
+    }
+    .header-text{
+        font-weight: bold;
+        color: rgb(83, 83, 238);
+    }
+</style>
+
+{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="#">INDIABank</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item ">
+              <a class="nav-link " href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="{% url 'accounts:signin' %}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="{% url 'accounts:signup' %}">Signup</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+      <section class="container text-center mt-5">
+        <h2 class="header-text">PERSONAL BANKING</h2>
+        <div class="row mt-5">
+            <div class="col-lg-4 "></div>
+                <div class="col-lg-2 col-md-6  button " >
+                  <a href="{% url 'accounts:signin' %}">LOGIN</a></div>
+                <div class="col-lg-2 col-md-6 button2">XoloBank</div>
+            </div>
+        <div class="row mt-5">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-2" style="cursor: pointer;"><i class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i> New User registration</div>
+            <div class="col-lg-2" style="cursor: pointer;"><i class="fa fa-question fa-2x" aria-hidden="true"></i> How Do I</div>
+            <div class="col-lg-2" style="cursor: pointer;"><i class="fa fa-volume-control-phone fa-2x" aria-hidden="true"></i> Customer Care</div>
+            <div class="col-lg-2" style="cursor: pointer;"><i class="fa fa-lock fa-2x" aria-hidden="true"></i> Lock & Unlock user</div>
+        </div>
+    </section>
+    <section class="container-fluid copyright row">
+        <div class="col-lg-6 text">2021 &copy; Bank. All Rights Reserved</div>
+        <div class="col-lg-6 text">Site best viewed at 1024 x 768 resolution in I.E 10+, Mozilla 40+, Google Chrome 50+</div>
+    </section>
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>

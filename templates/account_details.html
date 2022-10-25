@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% block stylecontent %}
+<style>
+    .button{
+        background-color: blue;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        margin-left: -16px;
+        cursor: pointer;
+    }
+    .button a{
+      color: white;
+      text-decoration: none;
+    }
+    .button:hover{
+        background-color: rgb(235, 94, 94);
+    }
+    .button2{
+        margin-left: 37px;
+        background-color: blue;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        cursor: pointer;
+    }
+    .button2:hover{
+        background-color: rgb(235, 94, 94);
+    }
+    .copyright{
+        background-color: rgb(32, 31, 31);
+        margin-top: 306px;
+        padding: 59px;
+        margin-left: 0px;
+    }
+    .text{
+        color: white;
+    }
+    .header-text{
+        font-weight: bold;
+        color: rgb(83, 83, 238);
+    }
+   .wtable{
+    margin-left: 476px;
+   }
+   .bcreate{
+    margin-bottom: 97px;
+    margin-top: 57px;
+   }
+   .Bbutton{
+
+   }
+</style>
+{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a class="navbar-brand" href="#">INDIABank</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item ">
+              <a class="nav-link " href="{% url 'profiles:dashboard' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+      <section>
+        {% block bodycontent %}
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+        
+         <form name="acc_management" id="acc_management" action="process_account_action"> 
+            <input type="hidden" name="account_action" id="account_action">  
+            <table width=70% height=60%>
+                <tr>
+                    <td>
+        
+                        <div id="page_name" style="float:left;">
+                            <font color="#3399ff">Welcome {{ customer.customer_data.Name }}!</font>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="details_box" class="wtable"  align="center">
+                            <h4 style="font-weight: bold; font-style: inherit;">Account Details :</h4>
+                            <table id="details_table" cellpadding=5px;>
+                                <tr>
+                                    <td style="font-family: -webkit-body;">Customer Name: {{ customer.customer_data.Name }}</td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td style="font-family: -webkit-body;">Branch-ID: <span id="branch-id">INDN03352</span> </td>
+                                </tr>
+                                {% if accounts %}
+                                {% for accno, acc_obj in accounts.items %}
+                                <tr>
+                                    <td style="font-family: -webkit-body;">Account number : {{ accno }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family: -webkit-body;">Balance: {{ acc_obj.account_details.Balance }}</td>
+                                    
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr> <td> New Customer. No accounts yet. </td></tr>
+                                {% endif %}
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        
+        {% else %}
+            <p>Welcome, new user. Please log in.</p>
+        {% endif %}
+        <p style="font-family: -webkit-body;">If you dont have an account click here to generate your account number</p> 
+        <button class="bcreate" onclick="set_account_action('create')"> Create New Account </button> <br>
+        Close Account?
+        <input name="close_accno" id="close_accno">
+ 
+        <button onclick="set_account_action('close');check_valid_accno()" type="button"> Close Account </button>
+        <!-- Setting button type = "button" so that form does not submit on button click -->
+        <span id="err_msg"> <b> </b> </span>
+        </form>
+        <script>
+        function set_account_action(account_action_val){
+            hidden_field = document.getElementById("account_action");
+            hidden_field.setAttribute("value", account_action_val);
+         }
+         
+         function check_valid_accno(){
+            accno = document.getElementById("close_accno").value;
+            accno_int = parseInt(accno)
+            valid_accounts = {can_close_accnos};
+            invalid_accno = true;
+            
+            for(accno of valid_accounts){
+                if(accno_int == accno){
+                    form_elem = document.getElementById("acc_management");
+                    form_elem.submit();
+                    invalid_accno = false;
+                }
+            }
+            
+            if(invalid_accno){
+                err_msg_tag = document.getElementById("err_msg");
+                err_msg_tag.textContent = "Invalid Account Number! User does not own this account";
+            }
+            /*
+            if(accno_int in valid_accounts){
+            //Checking if accno exists in valid_accounts Javascript obj
+                form_elem = document.getElementById("acc_management");
+                form_elem.submit();
+            }
+            else{
+                err_msg_tag = document.getElementById("err_msg");
+                err_msg_tag.textContent = "Invalid Account Number! User does not own this account";
+            }
+            */
+        }
+         
+         </script>
+        
+    {% endblock %}
+
+
+
+
+        </form>
+
+      </section>
+</body>

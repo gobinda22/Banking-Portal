@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    {% block stylecontent %}
+    <style>
+        body {
+            background-color: aliceblue;
+        }
+        h2 {
+            font-family: 'Slabo 27px';
+            border-bottom: 1px solid black;
+            font-weight: 900;
+        }
+        #page_name {
+            font-size: 25;
+        }
+        
+        #details_box {
+            font-size: 23;
+            top: 50px;
+            left: 30px;
+        }
+        
+        #details_table {
+            font-size: 20;
+            position: relative;
+            align-items: center;
+        }
+        
+        #edit_details {
+            top: 10px;
+            left: 20px;
+        }
+        
+        #edit_button {
+            border: none;
+            color: black;
+            padding: 5px 7px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 2px 1px;
+            cursor: pointer;
+        }
+    </style>
+    {%endblock%}
+</head>
+<body>
+    {% block bodycontent %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">INDIABank</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item ">
+            <a class="nav-link " href="{% url 'profiles:dashboard' %}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+         <form name="stat_gen" action="get_stat_gen"> 
+            <input type="hidden" name="account_action" id="account_action">
+            <table width=70% height=60%>
+                <tr>
+                    <td>
+                    <div id="page_name" style="float:left;">
+                        <font color="#3399ff">Welcome {{ customer.customer_data.Name }}!</font>
+                    </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="details_box" align="center">
+                            <h4 style="font-family: -webkit-body;">Transaction Details :</h4>
+                            <table id="trans_details_table" cellpadding=5px; width="100%">
+                                <tr>
+                                    <td style="font-family: -webkit-body;" >Trans_ID</td>
+                                    <td style="font-family: -webkit-body;">Acc_No</td>
+                                    <td style="font-family: -webkit-body;">Amount</td>
+                                    <td style="font-family: -webkit-body;">Type</td>
+                                </tr>
+                                {% if accounts %}
+                                    {% for accno, trans_obj_list in transaction.items %}
+                                        {% if transaction and msg != 'filter'%}
+                                            {% for trans_obj in trans_obj_list %}
+                                                <tr>
+                                                    <td>{{trans_obj.trans_id}}</td>
+                                                    <td>{{ accno }}</td>
+                                                    <td>{{trans_obj.trans_details.Amount}}</td>
+                                                    <td>{{trans_obj.trans_details.Type}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            {% for trans_obj in trans_obj_list%}
+                                                <tr>
+                                                    <td>{{trans_obj.Trans_ID}}</td>
+                                                    <td>{{ accno }}</td>
+                                                    <td>{{trans_obj.Amount}}</td>
+                                                    <td>{{trans_obj.Type}}</td>
+                                                </tr>
+                                            {% endfor %}
+
+                                        {% endif %}
+
+                                        
+
+                                    {% endfor %}
+                                    <tr>
+                                        <td>
+                                            <p>which type you want to see?</p><br>
+                                        </td>
+                                        <td>
+                                            <button onclick="set_account_action('all')"> all </button> <br><br>
+                                            <button onclick="set_account_action('withdraw')"> Withdraw </button> <br><br>
+                                            <button onclick="set_account_action('deposit')"> Deposit </button> <br> <br>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr> <td> New Customer. No accounts yet. </td></tr>
+                                {% endif %}
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        
+        {% else %}
+            <p>Welcome, new user. Please log in.</p>
+        {% endif %}
+        
+        
+        </form>
+        <script>
+        function set_account_action(account_action_val){
+            hidden_field = document.getElementById("account_action");
+            hidden_field.setAttribute("value", account_action_val);
+         }
+         </script>
+        
+    {% endblock%}
+    
+    </body>
